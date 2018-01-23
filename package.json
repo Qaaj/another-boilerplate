@@ -6,7 +6,10 @@
     "build": "webpack",
     "start": "webpack-dev-server --open",
     "build:dev": "webpack --env=dev --progress --profile --colors",
-    "build:dist": "webpack --env=prod --progress --profile --colors"
+    "build:dist": "webpack --env=prod --progress --profile --colors",
+    "docker:build": "docker build . --tag sockets",
+    "docker:run": "docker run -d -p 3000:3000 sockets",
+    "docker:stop": "docker stop $(docker ps -q --filter ancestor=sockets)"
   },
   "repository": "git@github.com:Qaaj/another-boilerplate.git",
   "author": "Jan Jorissen <grasmaaier45@gmail.com>",
@@ -25,11 +28,18 @@
     "webpack-dev-server": "^2.6.1"
   },
   "dependencies": {
+    "http-server": "^0.11.1",
+    "koa": "^2.4.1",
+    "koa-static": "^4.0.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-hot-loader": "^3.0.0-beta.7",
     "react-redux": "^5.0.5",
     "redux": "^3.7.2",
+    "redux-socket.io": "^1.4.0",
+    "reduxsauce": "^0.7.0",
+    "seamless-immutable": "^7.1.2",
+    "socket.io-client": "^2.0.4",
     "styled-components": "^2.1.1"
   }
 }

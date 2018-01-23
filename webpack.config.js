@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   //Content
-  entry: './index.js',
+  entry: './src/client/index.js',
   // A SourceMap without column-mappings ignoring loaded Source Maps.
   devtool: 'cheap-module-source-map',
   plugins: [
