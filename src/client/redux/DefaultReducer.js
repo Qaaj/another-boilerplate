@@ -14,6 +14,7 @@ export const INITIAL_STATE = Immutable({
 });
 
 export const showPrices = (state , {data}) => {
+  console.log(data);
   const {etheur} = data;
   return state.merge({fetching: false, error: null, price: etheur})
 }

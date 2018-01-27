@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import createSocketIoMiddleware from 'redux-socket.io';
 
 const io_options = {reconnect: true, transports: ['websocket', 'polling']};
-const socket = io('wss://api.bitfinex.com/ws/2',io_options);
+const socket = io('http://localhost:3001',io_options);
 
 let socketIoMiddleware = createSocketIoMiddleware(socket, "");
 
