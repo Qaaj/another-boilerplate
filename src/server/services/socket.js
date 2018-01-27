@@ -1,37 +1,40 @@
-const sendPair = async (client, io) => {
-  let etheur = await getPair(client, 'ETH:EUR');
-  let ethusd = await getPair(client, 'ETH:USD');
-  io.emit('action', {type: 'PRICES', data: {etheur, ethusd}});
-}
-
+const WebSocket = require('ws')
+const socket = require('socket.io');
 
 class SocketService {
 
-  constructor(client) {
-    this.io = require('socket.io')(0);
+  constructor(url, server) {
     this.activeConnections = {};
+
+    this.wss = new WebSocket(url);
+    this.io = new socket(server);
+    this.io.set('transports', ['websocket', 'polling']);
+
+    this.io.on('connection', (socket) => {
+      this.socketConnected(socket.id)
+      socket.on('disconnect', () => this.socketDisonnected(socket.id));
+    });
+
+    this.wss.onmessage = (msg) => this.tick(msg.data);
+
+    this.wss.onopen = () => {
+      this.wss.send(JSON.stringify({
+        "event": "subscribe",
+        "channel": "ticker",
+        "symbol": "tBTCUSD"
+      }));
+    };
   }
 
-  tick() {
+  tick(data) {
     if (Object.keys(this.activeConnections).length > 0) {
-      sendPair(this.client, this.io)
+      this.io.emit('action', {type:'PRICES', data});
     }
-  }
-
-  startTicking() {
-    this.tick();
-    this.intervalID = setInterval(() => this.tick(), 10000);
-  }
-
-  stopTicking() {
-    console.log("All Sockets disconnected - Stopping Timer.");
-    clearInterval(this.intervalID);
   }
 
   socketConnected(socket) {
     console.log('socket', socket, 'connected')
-    this.activeConnections[socket] = new Date().toTimeString();
-    this.startTicking();
+    this.activeConnections[socket] = new Date();
   }
 
   socketDisonnected(socket) {
@@ -42,24 +45,4 @@ class SocketService {
 
 }
 
-module.exports = {
-
-  SocketService,
-
-  attachSocketIO: server => {
-
-    const io = sio.listen(server);
-    io.adapter(redis_io);
-    io.set('transports', ['websocket', 'polling']);
-
-    io.on('connection', socket => {
-      process.send({msg: 'socket:connect', socket: socket.id});
-      socket.on('disconnect', () => {
-        process.send({msg: 'socket:disconnect', socket: socket.id});
-      });
-    });
-
-// Per worker
-// setInterval(() => io.emit(cluster.worker.id + ':time', new Date().toTimeString()), 10000);
-  }
-};
+module.exports = SocketService;
