@@ -5,7 +5,7 @@ import createSocketIoMiddleware from 'redux-socket.io';
 let socketIoMiddleware = createSocketIoMiddleware(socket, "");
 
 // creates the store
-export default (rootReducer, rootSaga) => {
+export default (rootReducer) => {
 
   const middleware = []
   const enhancers = []

@@ -1,5 +1,5 @@
 {
-  "name": "another-boilerplate",
+  "name": "bitfinex-sockets",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "build:dev": "webpack --env=dev --progress --profile --colors",
     "build:dist": "webpack --env=prod --progress --profile --colors",
     "docker:build": "docker build . --tag sockets",
-    "docker:run": "docker run -d -p 3000:3000 sockets",
+    "docker:run": "docker run -d -p 3001:3001 sockets",
     "docker:stop": "docker stop $(docker ps -q --filter ancestor=sockets)"
   },
   "repository": "git@github.com:Qaaj/another-boilerplate.git",

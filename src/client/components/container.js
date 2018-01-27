@@ -11,22 +11,26 @@ const Wrapper = styled.div`
 `;
 
 const Button = styled.div`
+  display: inline-block;
   padding: 10px;
   border-radius: 5px;
   background-color: #455A64;
-  cursor: pointer;
   color: white;
-  max-width: 100px;
-  text-align: center;
-  margin: 20px;
+  max-width: 300px; text-align: center;
+  margin: 20px 5px;
 `;
 
 const Container = (props) => {
+  const price = props.trades.toJS()[0] ? props.trades.toJS()[0].price : "Loading...";
   return (<div>
-    <Button onClick={()=>props.click()}>{props.connected ? 'Disconnect' : 'Connect'}</Button>
+    <div>
+      <Button style={{cursor: 'pointer'}}
+              onClick={() => props.click()}>{props.connected ? 'Disconnect' : 'Connect'}</Button>
+      <Button>Latest price: {price}</Button>
+    </div>
     <Wrapper>
-      <OrderBook />
-      <Trades />
+      <OrderBook/>
+      <Trades/>
     </Wrapper>
   </div>)
 }
@@ -34,6 +38,7 @@ const Container = (props) => {
 const mapStateToProps = (state) => {
   return {
     connected: state.default.get('connected'),
+    trades: state.default.get('trades'),
   }
 }
 

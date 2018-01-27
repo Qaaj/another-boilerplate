@@ -15,7 +15,12 @@ const Row = styled.div`
 
 const Column = styled.div`
   min-width: 100px;
-`
+`;
+
+const FirstColumn = styled.div`
+  font-weight: bold;
+  min-width: 100px;
+`;
 
 const Container = (props) => {
   const bids = props.bids.toJS();
@@ -30,9 +35,15 @@ const Container = (props) => {
       <Column>{total.toString().substr(0,5)}</Column>
       <Column>{item.price}</Column>
     </Row>
-  }).splice(0,25)
+  }).splice(0,24)
 
   return (<div>
+    <Row>
+      <FirstColumn>Orders</FirstColumn>
+      <FirstColumn>Amount</FirstColumn>
+      <FirstColumn>Total</FirstColumn>
+      <FirstColumn>Price</FirstColumn>
+    </Row>
       {items}
   </div>)
 }

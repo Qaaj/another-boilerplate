@@ -5,9 +5,8 @@ class SocketService {
 
   constructor(url, server) {
 
+    this.url = url;
     this.activeConnections = {};
-    this.channels = {};
-    this.wss = new WebSocket(url);
     this.io = new socket(server);
 
     this.io.set('transports', ['websocket', 'polling']);
@@ -16,11 +15,16 @@ class SocketService {
       this.socketConnected(socket.id)
       socket.on('disconnect', () => this.socketDisonnected(socket.id));
     });
+  }
+
+  initConnection(){
+
+    this.channels = {};
+    this.wss = new WebSocket(this.url);
 
     this.wss.onmessage = (msg) => {
       const message = JSON.parse(msg.data);
       if (message.event === 'subscribed') {
-        console.log(message);
         this.channels[message.chanId] = message.channel.toUpperCase();
         console.log(this.channels);
       };
@@ -29,11 +33,11 @@ class SocketService {
     };
 
     this.wss.onopen = () => {
-      // this.wss.send(JSON.stringify({
-      //   "event": "subscribe",
-      //   "channel": "ticker",
-      //   "symbol": "tBTCUSD"
-      // }));
+      this.wss.send(JSON.stringify({
+        "event": "subscribe",
+        "channel": "ticker",
+        "symbol": "tBTCUSD"
+      }));
       this.wss.send(JSON.stringify({
         "event": "subscribe",
         "channel": "trades",
@@ -60,14 +64,20 @@ class SocketService {
 
   socketConnected(socket) {
     console.log('socket', socket, 'connected');
+    if(Object.keys(this.activeConnections).length === 0){
+      this.activeConnections[socket] = new Date();
+      this.initConnection()
+    }
     this.activeConnections[socket] = new Date();
+
   }
 
   socketDisonnected(socket) {
     delete(this.activeConnections[socket]);
     console.log('socket', socket, 'disconnected')
-    if (Object.keys(this.activeConnections).length == 0) {
+    if (Object.keys(this.activeConnections).length === 0) {
       console.log("No active connections - stopping socket emits");
+      this.wss.close();
     }
   }
 
