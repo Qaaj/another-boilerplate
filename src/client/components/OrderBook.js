@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Trades from './Trades.js';
-import OrderBook from './OrderBook.js';
+import Asks from './Asks.js';
+import Bids from './Bids.js';
 
 const Wrapper = styled.div`
   display:flex;
@@ -11,8 +11,8 @@ const Wrapper = styled.div`
 const Container = (props) => {
   return (<div>
     <Wrapper>
-      <OrderBook />
-      <Trades />
+      <Bids />
+      <Asks />
     </Wrapper>
   </div>)
 }

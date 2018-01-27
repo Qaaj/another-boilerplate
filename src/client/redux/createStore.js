@@ -5,6 +5,8 @@ import createSocketIoMiddleware from 'redux-socket.io';
 const io_options = {reconnect: true, transports: ['websocket', 'polling']};
 const socket = io('http://localhost:3001',io_options);
 
+window.socket = socket;
+
 let socketIoMiddleware = createSocketIoMiddleware(socket, "");
 
 // creates the store
