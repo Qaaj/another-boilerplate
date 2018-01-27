@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server --open",
+    "start:dev": "webpack && webpack-dev-server --open",
+    "start:server": "node src/server",
     "build:dev": "webpack --env=dev --progress --profile --colors",
     "build:dist": "webpack --env=prod --progress --profile --colors",
     "docker:build": "docker build . --tag sockets",

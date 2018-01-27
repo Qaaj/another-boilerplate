@@ -7,6 +7,9 @@ const SocketService = require('./services/socket');
 const app = new Koa()
 const server = http.createServer(app.callback())
 
+app.use(serve('.'));
+
+
 new SocketService('wss://api.bitfinex.com/ws/2', server)
 
 server.listen(3001)
